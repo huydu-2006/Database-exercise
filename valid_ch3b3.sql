@@ -118,7 +118,39 @@
 
 -- h 
 
-select count(w.employeeid)
-from WorksOn w 
+-- First solution
+-- select count(w.employeeid)
+-- from WorksOn w 
+-- join Project p on w.projectid = p.projectid
+-- where p.projectname = 'Training Management'
+
+-- Second solution 
+-- select count(w.employeeid)
+-- from WorksOn w 
+-- where w.projectid = (select projectid from Project where ProjectName = 'Training Management')
+
+-- i 
+
+-- First solution
+-- select p.projectname
+-- from Project p  
+-- left join WorksOn w on p.projectid = w.projectid
+-- group by p.projectid, p.projectname
+-- having count(w.employeeid) < 10
+
+-- Second solution
+-- select p.projectname, p.projectid
+-- from Project p  
+-- where (
+--     select count(w.employeeid)
+--     from WorksOn w 
+--     where w.projectid = p.projectid 
+-- ) < 10
+
+-- j
+
+select p.projectname, p.projectid
+from WorksOn w
 join Project p on w.projectid = p.projectid
-where p.projectname = 'Training Management'
+group by p.projectid, p.projectname
+having count(w.employeeid) = (select count(employeeid) from WorksOn group by ProjectID ORDER BY count(employeeid) DESC LIMIT 1)
