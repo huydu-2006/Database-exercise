@@ -1,0 +1,1 @@
+Don't read excersise file's vietnamese part, only read english part 
